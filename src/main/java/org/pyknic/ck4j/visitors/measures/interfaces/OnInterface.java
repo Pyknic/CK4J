@@ -14,14 +14,14 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.pyknic.ck4j.visitors.measures.listeners;
+package org.pyknic.ck4j.visitors.measures.interfaces;
 
-import org.apache.bcel.generic.Instruction;
+import org.apache.bcel.classfile.JavaClass;
 
 /**
  *
  * @author Emil Forslund
  */
-public interface OnInstruction {
-    void onInstruction(Instruction instr);
+public interface OnInterface {
+    void onInterface(JavaClass interf);
 }

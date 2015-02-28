@@ -26,7 +26,7 @@ import static org.pyknic.ck4j.metrics.CK.WMC;
 import org.pyknic.ck4j.visitors.measures.Cbo;
 import org.pyknic.ck4j.visitors.measures.Dit;
 import org.pyknic.ck4j.visitors.measures.Lcom;
-import org.pyknic.ck4j.visitors.measures.MetricsMgr;
+import org.pyknic.ck4j.visitors.measures.interfaces.MetricsMgr;
 import org.pyknic.ck4j.visitors.measures.Noc;
 import org.pyknic.ck4j.visitors.measures.Rfc;
 import org.pyknic.ck4j.visitors.measures.Wmc;

@@ -16,6 +16,7 @@
  */
 package org.pyknic.ck4j.visitors.measures;
 
+import org.pyknic.ck4j.visitors.measures.interfaces.Metric;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -24,8 +25,8 @@ import org.apache.bcel.classfile.Field;
 import org.apache.bcel.classfile.JavaClass;
 import org.apache.bcel.generic.MethodGen;
 import org.pyknic.ck4j.metrics.CKMetricsBuilderMgr;
-import org.pyknic.ck4j.visitors.measures.listeners.OnField;
-import org.pyknic.ck4j.visitors.measures.listeners.OnMethod;
+import org.pyknic.ck4j.visitors.measures.interfaces.OnField;
+import org.pyknic.ck4j.visitors.measures.interfaces.OnMethod;
 
 /**
  *

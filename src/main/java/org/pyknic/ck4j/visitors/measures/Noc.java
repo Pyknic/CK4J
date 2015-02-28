@@ -16,6 +16,7 @@
  */
 package org.pyknic.ck4j.visitors.measures;
 
+import org.pyknic.ck4j.visitors.measures.interfaces.Metric;
 import org.apache.bcel.classfile.JavaClass;
 import org.pyknic.ck4j.metrics.CKMetricsBuilderMgr;
 
@@ -24,7 +25,6 @@ import org.pyknic.ck4j.metrics.CKMetricsBuilderMgr;
  * @author Emil Forslund
  */
 public class Noc extends Metric {
-
     public Noc(JavaClass visited, CKMetricsBuilderMgr mgr) {
         super(visited, mgr);
     }

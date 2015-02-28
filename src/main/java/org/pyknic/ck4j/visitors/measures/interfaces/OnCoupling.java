@@ -14,14 +14,12 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.pyknic.ck4j.visitors.measures.listeners;
-
-import org.apache.bcel.generic.MethodGen;
+package org.pyknic.ck4j.visitors.measures.interfaces;
 
 /**
  *
  * @author Emil Forslund
  */
-public interface OnMethod {
-    void onMethod(MethodGen method);
+public interface OnCoupling {
+    void onCoupled(String className);
 }

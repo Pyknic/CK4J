@@ -16,6 +16,7 @@
  */
 package org.pyknic.ck4j.visitors.measures;
 
+import org.pyknic.ck4j.visitors.measures.interfaces.Metric;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Stream;
@@ -36,19 +37,19 @@ import org.pyknic.ck4j.metrics.CKMetricsBuilderMgr;
 import org.pyknic.ck4j.visitors.Settings;
 import static org.pyknic.ck4j.visitors.Settings.COUPLE_TO_INTERFACES;
 import static org.pyknic.ck4j.visitors.Settings.COUPLE_TO_JAVA_SDK;
-import org.pyknic.ck4j.visitors.measures.listeners.OnClass;
-import org.pyknic.ck4j.visitors.measures.listeners.OnCoupling;
-import org.pyknic.ck4j.visitors.measures.listeners.OnField;
-import org.pyknic.ck4j.visitors.measures.listeners.OnInstruction;
-import org.pyknic.ck4j.visitors.measures.listeners.OnInterface;
-import org.pyknic.ck4j.visitors.measures.listeners.OnMethod;
+import org.pyknic.ck4j.visitors.measures.interfaces.OnClass;
+import org.pyknic.ck4j.visitors.measures.interfaces.OnCoupling;
+import org.pyknic.ck4j.visitors.measures.interfaces.OnField;
+import org.pyknic.ck4j.visitors.measures.interfaces.OnInstruction;
+import org.pyknic.ck4j.visitors.measures.interfaces.OnInterface;
+import org.pyknic.ck4j.visitors.measures.interfaces.OnMethod;
 
 /**
  *
  * @author Emil Forslund
  */
-public class Cbo extends Metric implements
-        OnClass, OnInterface, OnField, OnMethod, OnInstruction, OnCoupling {
+public class Cbo extends Metric implements OnClass, OnInterface, OnField, 
+        OnMethod, OnInstruction, OnCoupling {
     
     private final Set<String> efferentCouplings = new HashSet<>();
 
@@ -108,7 +109,7 @@ public class Cbo extends Metric implements
     }
 
     @Override
-    public void onCoupling(String className) {
+    public void onCoupled(String className) {
         efferentCouplings.add(className);
     }
     
@@ -124,10 +125,11 @@ public class Cbo extends Metric implements
     }
     
     private void registerCoupling(String name) {
-        if (COUPLE_TO_JAVA_SDK.isSet()
-        || !Settings.isJavaSDK(name)) {
-            onCoupling(name);
-            mgr().get(name).getMetricsMgr().notifyCoupling(visited().getClassName());
+        if (!Settings.isJavaSDK(name)) {
+            mgr().get(name).getMetricsMgr().notifyCoupled(visited().getClassName());
+            onCoupled(name);
+        } else if (COUPLE_TO_JAVA_SDK.isSet()) {
+            onCoupled(name);
         }
     }
     

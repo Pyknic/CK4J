@@ -16,6 +16,9 @@
  */
 package org.pyknic.ck4j.visitors.measures;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.pyknic.ck4j.visitors.measures.interfaces.Metric;
 import org.apache.bcel.classfile.JavaClass;
 import org.pyknic.ck4j.metrics.CKMetricsBuilderMgr;
 
@@ -34,9 +37,10 @@ public class Dit extends Metric {
         try {
             return visited().getSuperClasses().length;
         } catch (ClassNotFoundException ex) {
-            throw new UnsupportedOperationException(
+            Logger.getLogger(Dit.class.getName()).log(Level.SEVERE, 
                 "Failed to load one or more super classes of '" + visited().getClassName() + "'."
-            );
+            , ex);
+            return -1;
         }
     }
 }

@@ -33,7 +33,6 @@ public class ClassVisitor extends EmptyVisitor {
     private final JavaClass visited;
     private final ConstantPoolGen constants;
     private final CKMetricsBuilder builder;
-    private final CKMetricsBuilderMgr mgr;
 
     /**
      * Instantiates the ClassVisitor for a particular class.
@@ -44,14 +43,19 @@ public class ClassVisitor extends EmptyVisitor {
         this.visited    = visited;
         this.constants  = new ConstantPoolGen(visited.getConstantPool());
         this.builder    = mgr.get(visited);
-        this.mgr        = mgr;
     }
 
+    /**
+     * "Visits" the current class, notifying the CKMetricsBuilderMgr when
+     * parts of the class is found.
+     */
     public void visit() {
         builder.getMetricsMgr().notifyClass(visited);
         
         try {
-            Stream.of(visited.getAllInterfaces()).forEach(i -> builder.getMetricsMgr().notifyInterface(i));
+            Stream.of(visited.getAllInterfaces()).forEach(
+                i -> builder.getMetricsMgr().notifyInterface(i)
+            );
         } catch (ClassNotFoundException ex) {
             throw new UnsupportedOperationException(ex);
         }

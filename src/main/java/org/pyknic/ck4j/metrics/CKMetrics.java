@@ -16,6 +16,10 @@
  */
 package org.pyknic.ck4j.metrics;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 /**
  * A lightweight representation of the CK metrics of a particular class.
  * This class is an immutable.
@@ -100,5 +104,22 @@ public final class CKMetrics {
      */
     public int getLcom() {
         return lcom;
+    }
+    
+    /**
+     * Returns a list with all metrics in the following order:
+     *      wmc, noc, rfc, cbo, dit, lcom.
+     * 
+     * @return a list of all metrics.
+     */
+    public List<Integer> getAll() {
+        return Arrays.asList(wmc, noc, rfc, cbo, dit, lcom);
+    }
+
+    @Override
+    public String toString() {
+        return getAll().stream()
+            .map(i -> i.toString())
+            .collect(Collectors.joining(", ", "(", ")"));
     }
 }

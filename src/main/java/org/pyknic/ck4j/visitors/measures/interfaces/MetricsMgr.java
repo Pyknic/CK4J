@@ -14,7 +14,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.pyknic.ck4j.visitors.measures;
+package org.pyknic.ck4j.visitors.measures.interfaces;
 
 import java.util.ArrayList;
 import java.util.EnumMap;
@@ -25,12 +25,6 @@ import org.apache.bcel.classfile.JavaClass;
 import org.apache.bcel.generic.Instruction;
 import org.apache.bcel.generic.MethodGen;
 import org.pyknic.ck4j.metrics.CK;
-import org.pyknic.ck4j.visitors.measures.listeners.OnClass;
-import org.pyknic.ck4j.visitors.measures.listeners.OnCoupling;
-import org.pyknic.ck4j.visitors.measures.listeners.OnField;
-import org.pyknic.ck4j.visitors.measures.listeners.OnInstruction;
-import org.pyknic.ck4j.visitors.measures.listeners.OnInterface;
-import org.pyknic.ck4j.visitors.measures.listeners.OnMethod;
 
 /**
  *
@@ -85,8 +79,8 @@ public abstract class MetricsMgr {
         onMethod.stream().forEach(c -> c.onMethod(method));
     }
     
-    public void notifyCoupling(String className) {
-        onCoupling.stream().forEach(c -> c.onCoupling(className));
+    public void notifyCoupled(String className) {
+        onCoupling.stream().forEach(c -> c.onCoupled(className));
     }
     
     public int get(CK metric) {

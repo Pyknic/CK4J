@@ -14,7 +14,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.pyknic.ck4j.visitors.measures;
+package org.pyknic.ck4j.visitors.measures.interfaces;
 
 import org.apache.bcel.classfile.JavaClass;
 import org.apache.bcel.generic.ConstantPoolGen;
