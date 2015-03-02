@@ -24,6 +24,7 @@ import org.apache.bcel.Constants;
 import org.apache.bcel.classfile.Field;
 import org.apache.bcel.classfile.JavaClass;
 import org.apache.bcel.generic.ArrayType;
+import org.apache.bcel.generic.BasicType;
 import org.apache.bcel.generic.ConstantPushInstruction;
 import org.apache.bcel.generic.FieldInstruction;
 import org.apache.bcel.generic.Instruction;
@@ -103,7 +104,10 @@ public class Cbo extends Metric implements OnClass, OnInterface, OnField,
                 registerCoupling(ii.getReturnType(constants()));
 
             } else if (i instanceof TypedInstruction) {
-                registerCoupling(((TypedInstruction) i).getType(constants()));
+                final Type ti = ((TypedInstruction) i).getType(constants());
+                if (!ti.getSignature().equals("<null object>")) {
+                    registerCoupling(ti);
+                }
             }
         }
     }

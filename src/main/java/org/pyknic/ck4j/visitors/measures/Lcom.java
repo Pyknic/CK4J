@@ -21,6 +21,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.apache.bcel.classfile.Field;
 import org.apache.bcel.classfile.JavaClass;
 import org.apache.bcel.generic.MethodGen;
@@ -32,7 +34,7 @@ import org.pyknic.ck4j.visitors.measures.interfaces.OnMethod;
  *
  * @author Emil Forslund
  */
-public class Lcom extends Metric implements OnMethod, OnField {
+public class Lcom extends Metric implements OnMethod {
     private final List<Set<String>> fieldsInMethods = new ArrayList<>();
 
     public Lcom(JavaClass visited, CKMetricsBuilderMgr mgr) {
@@ -41,12 +43,12 @@ public class Lcom extends Metric implements OnMethod, OnField {
 
     @Override
     public void onMethod(MethodGen method) {
-        fieldsInMethods.add(new TreeSet<>());
-    }
-
-    @Override
-    public void onField(Field field) {
-        fieldsInMethods.get(fieldsInMethods.size() - 1).add(field.getName());
+        fieldsInMethods.add(Stream.of(method.getArgumentTypes())
+            .map(t -> t.getSignature())
+            .collect(Collectors.toCollection(
+                () -> new TreeSet<String>()
+            ))
+        );
     }
     
     @Override

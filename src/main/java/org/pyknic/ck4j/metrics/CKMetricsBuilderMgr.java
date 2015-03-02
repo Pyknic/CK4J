@@ -16,14 +16,10 @@
  */
 package org.pyknic.ck4j.metrics;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import org.apache.bcel.classfile.ClassFormatException;
-import org.apache.bcel.classfile.ClassParser;
 import org.apache.bcel.classfile.JavaClass;
 import org.pyknic.ck4j.visitors.ClassVisitor;
 
@@ -35,25 +31,29 @@ import org.pyknic.ck4j.visitors.ClassVisitor;
 public final class CKMetricsBuilderMgr {
     private final Map<String, CKMetricsBuilder> builders = new HashMap<>();
     
-    public Stream<ClassVisitor> load(Stream<String> javaClassFileNames) {
-        return javaClassFileNames
-            .map(f -> parseJavaClassFile(f))
-            .filter(jc -> jc != null)
-            .map(jc -> new ClassVisitor(jc, this));
+    public void visitAll(Stream<ClassVisitor> visitors) {
+        visitors.collect(Collectors.toList()).forEach(ClassVisitor::visit);
     }
+
+//    public Stream<ClassVisitor> load(Stream<String> javaClassFileNames) {
+//        return javaClassFileNames
+//            .map(f -> parseJavaClassFile(f))
+//            .filter(jc -> jc != null)
+//            .map(jc -> new ClassVisitor(jc, this));
+//    }
     
-    private static JavaClass parseJavaClassFile(String fileName) {
-        try {
-            System.out.println("        Loading: " + fileName);
-            JavaClass jc = new ClassParser(fileName).parse();
-            System.out.println("        New name: " + jc.getFileName());
-            return jc;
-        } catch (IOException | ClassFormatException ex) {
-            Logger.getLogger(CKMetricsBuilderMgr.class.getName()).log(Level.SEVERE, "Could not find the file '" + fileName + "' specified.", ex);
-        }
-        
-        return null;
-    }
+//    private static JavaClass parseJavaClassFile(String fileName) {
+//        try {
+//            System.out.println("        Loading: " + fileName);
+//            JavaClass jc = new ClassParser(fileName).parse();
+//            System.out.println("        New name: " + jc.getFileName());
+//            return jc;
+//        } catch (IOException | ClassFormatException ex) {
+//            Logger.getLogger(CKMetricsBuilderMgr.class.getName()).log(Level.SEVERE, "Could not find the file '" + fileName + "' specified.", ex);
+//        }
+//        
+//        return null;
+//    }
     
     public CKMetricsBuilder get(JavaClass clazz) {
         return builders.computeIfAbsent(clazz.getClassName(), 
