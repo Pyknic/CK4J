@@ -18,20 +18,28 @@ package org.pyknic.ck4j.visitors.measures;
 
 import org.pyknic.ck4j.visitors.measures.interfaces.Metric;
 import org.apache.bcel.classfile.JavaClass;
+import org.apache.bcel.generic.MethodGen;
 import org.pyknic.ck4j.metrics.CKMetricsBuilderMgr;
+import org.pyknic.ck4j.visitors.measures.interfaces.OnMethod;
 
 /**
  *
  * @author Emil Forslund
  */
-public class Wmc extends Metric {
+public class Wmc extends Metric implements OnMethod {
+    private int counter = 0;
 
     public Wmc(JavaClass visited, CKMetricsBuilderMgr mgr) {
         super(visited, mgr);
     }
+
+    @Override
+    public void onMethod(MethodGen method) {
+        counter++;
+    }
     
     @Override
     public int getResult() {
-        return 0;
+        return counter;
     }
 }

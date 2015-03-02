@@ -116,6 +116,10 @@ public final class CKMetrics {
         return Arrays.asList(wmc, noc, rfc, cbo, dit, lcom);
     }
 
+    /**
+     * Transformes this object into a string.
+     * @return 
+     */
     @Override
     public String toString() {
         return getAll().stream()

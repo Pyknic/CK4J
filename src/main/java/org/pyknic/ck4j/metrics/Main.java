@@ -16,7 +16,6 @@
  */
 package org.pyknic.ck4j.metrics;
 
-import com.sun.org.apache.bcel.internal.Repository;
 import java.io.File;
 import java.io.IOException;
 import java.util.jar.JarFile;
@@ -66,29 +65,9 @@ public class Main {
                 System.out.println("    " + e.getKey() + " : " + e.getValue());
             });
 
-//            try {
-//                loadFromDirectory(mgr, new File(params[0]).toPath());
-//            } catch (IOException ex) {
-//                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, "The path specified could not be parsed.", ex);
-//            }
-//            
-//            System.out.println("The following classes was evaluated:");
-//            mgr.stream().forEach(e -> {
-//                System.out.println("    " + e.getKey() + " : " + e.getValue());
-//            });
-            
         } else {
             System.err.println("Missing parameter! You need to specifiy a .class file or a folder that can be traversed to find .class files.");
         }
         System.out.println("Closing down.");
     }
-//    
-//    public static void loadFromDirectory(CKMetricsBuilderMgr mgr, Path dir) throws IOException {
-//        mgr.load(Files.walk(dir)
-//            .filter(f -> f.toFile().isFile())
-//            .map(f -> f.toString())
-//            .filter(s -> s.endsWith(".class"))
-//        ).collect(Collectors.toList())
-//            .forEach(v -> v.visit());
-//    }
 }

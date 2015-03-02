@@ -24,7 +24,6 @@ import org.apache.bcel.Constants;
 import org.apache.bcel.classfile.Field;
 import org.apache.bcel.classfile.JavaClass;
 import org.apache.bcel.generic.ArrayType;
-import org.apache.bcel.generic.BasicType;
 import org.apache.bcel.generic.ConstantPushInstruction;
 import org.apache.bcel.generic.FieldInstruction;
 import org.apache.bcel.generic.Instruction;

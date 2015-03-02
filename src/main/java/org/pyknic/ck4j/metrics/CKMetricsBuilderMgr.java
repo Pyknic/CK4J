@@ -35,26 +35,6 @@ public final class CKMetricsBuilderMgr {
         visitors.collect(Collectors.toList()).forEach(ClassVisitor::visit);
     }
 
-//    public Stream<ClassVisitor> load(Stream<String> javaClassFileNames) {
-//        return javaClassFileNames
-//            .map(f -> parseJavaClassFile(f))
-//            .filter(jc -> jc != null)
-//            .map(jc -> new ClassVisitor(jc, this));
-//    }
-    
-//    private static JavaClass parseJavaClassFile(String fileName) {
-//        try {
-//            System.out.println("        Loading: " + fileName);
-//            JavaClass jc = new ClassParser(fileName).parse();
-//            System.out.println("        New name: " + jc.getFileName());
-//            return jc;
-//        } catch (IOException | ClassFormatException ex) {
-//            Logger.getLogger(CKMetricsBuilderMgr.class.getName()).log(Level.SEVERE, "Could not find the file '" + fileName + "' specified.", ex);
-//        }
-//        
-//        return null;
-//    }
-    
     public CKMetricsBuilder get(JavaClass clazz) {
         return builders.computeIfAbsent(clazz.getClassName(), 
             s -> new CKMetricsBuilder(clazz, this)
