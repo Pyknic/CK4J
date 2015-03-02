@@ -71,7 +71,7 @@ public abstract class MetricsMgr {
         onInstruction.stream().forEach(c -> c.onInstruction(instr));
     }
     
-    public void notifyInterface(JavaClass interf) {
+    public void notifyInterface(String interf) {
         onInterface.stream().forEach(c -> c.onInterface(interf));
     }
     

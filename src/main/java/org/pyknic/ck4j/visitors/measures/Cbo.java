@@ -68,9 +68,9 @@ public class Cbo extends Metric implements OnClass, OnInterface, OnField,
     }
 
     @Override
-    public void onInterface(JavaClass interf) {
+    public void onInterface(String interf) {
         if (COUPLE_TO_INTERFACES.isSet()) {
-            registerCoupling(interf.getClassName());
+            registerCoupling(interf);
         }
     }
 

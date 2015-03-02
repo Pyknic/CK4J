@@ -23,5 +23,5 @@ import org.apache.bcel.classfile.JavaClass;
  * @author Emil Forslund
  */
 public interface OnInterface {
-    void onInterface(JavaClass interf);
+    void onInterface(String interf);
 }

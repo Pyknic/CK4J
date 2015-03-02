@@ -52,13 +52,9 @@ public class ClassVisitor extends EmptyVisitor {
     public void visit() {
         builder.getMetricsMgr().notifyClass(visited);
         
-        try {
-            Stream.of(visited.getAllInterfaces()).forEach(
-                i -> builder.getMetricsMgr().notifyInterface(i)
-            );
-        } catch (ClassNotFoundException ex) {
-            throw new UnsupportedOperationException(ex);
-        }
+        Stream.of(visited.getInterfaceNames()).forEach(
+            i -> builder.getMetricsMgr().notifyInterface(i)
+        );
         
         Stream.of(visited.getFields()).forEach(f -> builder.getMetricsMgr().notifyField(f));
         Stream.of(visited.getMethods()).forEach(m -> processMethod(m));
