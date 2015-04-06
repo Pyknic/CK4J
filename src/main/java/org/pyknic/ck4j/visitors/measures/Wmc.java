@@ -35,7 +35,9 @@ public class Wmc extends Metric implements OnMethod {
 
     @Override
     public void onMethod(MethodGen method) {
-        counter++;
+        if (!method.isNative()) {
+            counter++;
+        }
     }
     
     @Override

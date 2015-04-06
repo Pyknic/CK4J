@@ -33,6 +33,9 @@ public final class CKMetricsBuilderMgr {
     
     public void visitAll(Stream<ClassVisitor> visitors) {
         visitors.collect(Collectors.toList()).forEach(ClassVisitor::visit);
+//        visitors.collect(Collectors.toList()).forEach(v -> {
+//            System.out.println(v.dependencies().stream().collect(joining("\n--", "--", "\n")));
+//        });
     }
 
     public CKMetricsBuilder get(JavaClass clazz) {

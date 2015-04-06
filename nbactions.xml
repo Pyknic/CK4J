@@ -16,48 +16,5 @@
     License for the specific language governing permissions and limitations under
     the License.
 
---><actions>
-        <action>
-            <actionName>run</actionName>
-            <packagings>
-                <packaging>jar</packaging>
-            </packagings>
-            <goals>
-                <goal>process-classes</goal>
-                <goal>org.codehaus.mojo:exec-maven-plugin:1.2.1:exec</goal>
-            </goals>
-            <properties>
-                <exec.args>-classpath %classpath ${packageClassName} C:/Users/Duncan/Documents/GitHub/CodeGen/target/CodeGen-1.0-SNAPSHOT.jar</exec.args>
-                <exec.executable>java</exec.executable>
-            </properties>
-        </action>
-        <action>
-            <actionName>debug</actionName>
-            <packagings>
-                <packaging>jar</packaging>
-            </packagings>
-            <goals>
-                <goal>process-classes</goal>
-                <goal>org.codehaus.mojo:exec-maven-plugin:1.2.1:exec</goal>
-            </goals>
-            <properties>
-                <exec.args>-Xdebug -Xrunjdwp:transport=dt_socket,server=n,address=${jpda.address} -classpath %classpath ${packageClassName} C:/Users/Duncan/Documents/GitHub/CodeGen/target/CodeGen-1.0-SNAPSHOT.jar</exec.args>
-                <exec.executable>java</exec.executable>
-                <jpda.listen>true</jpda.listen>
-            </properties>
-        </action>
-        <action>
-            <actionName>profile</actionName>
-            <packagings>
-                <packaging>jar</packaging>
-            </packagings>
-            <goals>
-                <goal>process-classes</goal>
-                <goal>org.codehaus.mojo:exec-maven-plugin:1.2.1:exec</goal>
-            </goals>
-            <properties>
-                <exec.args>-classpath %classpath ${packageClassName} C:/Users/Duncan/Documents/GitHub/CodeGen/target/CodeGen-1.0-SNAPSHOT.jar</exec.args>
-                <exec.executable>java</exec.executable>
-            </properties>
-        </action>
+-->
     </actions>

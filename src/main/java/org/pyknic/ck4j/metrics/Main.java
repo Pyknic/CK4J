@@ -32,14 +32,17 @@ import org.pyknic.ck4j.visitors.ClassVisitor;
  */
 public class Main {
     public static void main(String... params) {
+
         System.out.println("Starting CK4J.");
-        if (params.length > 0) {
+//        if (params.length > 0) {
+//            String jarPath = params[0];
+            String jarPath = "C:/Users/Duncan/Documents/NetBeansProjects/CodeGenExample_HelloWorld/target/CodeGenExample_HelloWorld-0.0.1-SNAPSHOT-jar-with-dependencies.jar";
             
             final CKMetricsBuilderMgr mgr = new CKMetricsBuilderMgr();
             
-            System.out.println("Attempting to load '" + params[0] + "'.");
+            System.out.println("Attempting to load '" + jarPath + "'.");
             try {
-                final JarFile jar = new JarFile(new File(params[0]));
+                final JarFile jar = new JarFile(new File(jarPath));
                 mgr.visitAll(
                     jar.stream().filter(e -> e.getName().endsWith(".class")).map(e -> {
                         try {
@@ -57,7 +60,7 @@ public class Main {
                 );
             } catch (IOException ex) {
                 Logger.getLogger(Main.class.getName()).log(Level.SEVERE, 
-                    "Failed to load .jar file: '" + params[0] + "'.", ex
+                    "Failed to load .jar file: '" + jarPath + "'.", ex
                 );
             }
 
@@ -65,9 +68,9 @@ public class Main {
                 System.out.println("    " + e.getKey() + " : " + e.getValue());
             });
 
-        } else {
-            System.err.println("Missing parameter! You need to specifiy a .class file or a folder that can be traversed to find .class files.");
-        }
+//        } else {
+//            System.err.println("Missing parameter! You need to specifiy a .class file or a folder that can be traversed to find .class files.");
+//        }
         System.out.println("Closing down.");
     }
 }

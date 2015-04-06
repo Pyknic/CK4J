@@ -122,8 +122,13 @@ public final class CKMetrics {
      */
     @Override
     public String toString() {
-        return getAll().stream()
-            .map(i -> i.toString())
-            .collect(Collectors.joining(", ", "(", ")"));
+        return new StringBuilder("(")
+            .append("WMC: ").append(wmc).append(", ")
+            .append("NOC: ").append(noc).append(", ")
+            .append("RFC: ").append(rfc).append(", ")
+            .append("CBO: ").append(cbo).append(", ")
+            .append("DIT: ").append(dit).append(", ")
+            .append("LCOM: ").append(lcom)
+        .append(")").toString();
     }
 }

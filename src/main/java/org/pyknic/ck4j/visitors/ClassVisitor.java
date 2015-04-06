@@ -16,12 +16,20 @@
  */
 package org.pyknic.ck4j.visitors;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.function.Function;
+import static java.util.stream.Collectors.toList;
 import java.util.stream.Stream;
 import org.apache.bcel.classfile.EmptyVisitor;
 import org.apache.bcel.classfile.JavaClass;
 import org.apache.bcel.classfile.Method;
 import org.apache.bcel.generic.ConstantPoolGen;
 import org.apache.bcel.generic.MethodGen;
+import org.apache.bcel.generic.Type;
+import org.apache.bcel.generic.TypedInstruction;
 import org.pyknic.ck4j.metrics.CKMetricsBuilder;
 import org.pyknic.ck4j.metrics.CKMetricsBuilderMgr;
 
@@ -44,6 +52,44 @@ public class ClassVisitor extends EmptyVisitor {
         this.constants  = new ConstantPoolGen(visited.getConstantPool());
         this.builder    = mgr.get(visited);
     }
+//    
+//    public Set<String> dependencies() {
+//        final Set<String> results = new HashSet<>();
+//        
+//        results.addAll(Arrays.asList(visited.getInterfaceNames()));
+//        
+//        results.addAll(typeNames(visited.getFields(), f -> f.getType()));
+//        
+//        Stream.of(visited.getMethods()).forEach(m -> {
+//            results.addAll(typeNames(m.getArgumentTypes()));
+//            results.add(m.getReturnType().toString());
+//            
+//            final MethodGen gen = new MethodGen(m, visited.getClassName(), constants);
+//            
+//            results.addAll(
+//                Stream.of(gen.getInstructionList().getInstructionHandles())
+//                    .map(ih -> ih.getInstruction())
+//                    .filter(i -> i instanceof TypedInstruction)
+//                    .map(i -> (TypedInstruction) i)
+//                    .map(ti -> ti.getType(constants))
+//                    .map(t -> t.toString())
+//                    .collect(toList())
+//            );
+//        });
+//        
+//        return results;
+//    }
+//    
+//    private static List<String> typeNames(Type[] types) {
+//        return typeNames(types, t -> t);
+//    }
+//    
+//    private static <T> List<String> typeNames(T[] types, Function<T, Type> converter) {
+//        return Stream.of(types)
+//            .map(converter)
+//            .map(t -> t.toString())
+//            .collect(toList());
+//    }
 
     /**
      * "Visits" the current class, notifying the CKMetricsBuilderMgr when
@@ -68,6 +114,7 @@ public class ClassVisitor extends EmptyVisitor {
         if (!gen.isAbstract() && !gen.isNative()) {
             Stream.of(gen.getInstructionList().getInstructionHandles())
                 .map(ih -> ih.getInstruction())
+                //.peek(i -> System.out.println("Instruction: " + i.toString(true) + "    " + ((i instanceof TypedInstruction) ? ((TypedInstruction) i).getType(constants).toString() : "-")))
                 .forEach(i -> builder.getMetricsMgr().notifyInstruction(i));
         }
     }

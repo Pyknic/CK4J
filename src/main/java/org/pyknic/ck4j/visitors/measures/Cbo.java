@@ -19,6 +19,7 @@ package org.pyknic.ck4j.visitors.measures;
 import org.pyknic.ck4j.visitors.measures.interfaces.Metric;
 import java.util.HashSet;
 import java.util.Set;
+import static java.util.stream.Collectors.joining;
 import java.util.stream.Stream;
 import org.apache.bcel.Constants;
 import org.apache.bcel.classfile.Field;
@@ -52,93 +53,107 @@ public class Cbo extends Metric implements OnClass, OnInterface, OnField,
         OnMethod, OnInstruction, OnCoupling {
     
     private final Set<String> efferentCouplings = new HashSet<>();
+    public final static String PRIMITIVE_NAME = "java.PRIMITIVE";
+    
+    private final String name;
 
     public Cbo(JavaClass visited, CKMetricsBuilderMgr mgr) {
         super (visited, mgr);
+        name = visited.getClassName();
     }
     
     @Override
     public int getResult() {
+        System.out.println("Coupling for " + name + ":\n    " + efferentCouplings.stream().collect(joining("\n    ")));
         return efferentCouplings.size();
     }
 
     @Override
     public void onClass(JavaClass clazz) {
-        registerCoupling(clazz.getSuperclassName());
+//        registerCoupling(clazz.getSuperclassName());
     }
 
     @Override
     public void onInterface(String interf) {
         if (COUPLE_TO_INTERFACES.isSet()) {
-            registerCoupling(interf);
+//            registerCoupling(interf);
         }
     }
 
     @Override
     public void onField(Field field) {
-        registerCoupling(field.getType());
+//        registerCoupling(field.getType());
     }
     
     @Override
     public void onMethod(MethodGen gen) {
-        registerCoupling(gen.getReturnType());
+        //registerCoupling(gen.getReturnType());
         
-        Stream.of(gen.getArgumentTypes()).forEach(t -> registerCoupling(t));
-        Stream.of(gen.getExceptions()).forEach(t -> registerCoupling(t));
-        Stream.of(gen.getExceptionHandlers())
-            .map(eh -> eh.getCatchType())
-            .filter(ct -> ct != null)
-            .forEach(ct -> registerCoupling(ct));
+        //Stream.of(gen.getArgumentTypes()).forEach(t -> registerCoupling(t));
+        //Stream.of(gen.getExceptions()).forEach(t -> registerCoupling(t));
+//        Stream.of(gen.getExceptionHandlers())
+//            .map(eh -> eh.getCatchType())
+//            .filter(ct -> ct != null)
+//            .forEach(ct -> registerCoupling(ct));
     }
 
     @Override
     public void onInstruction(Instruction i) {
-        if (shouldVisit(i)) {
+        //if (shouldVisit(i)) {
             if (i instanceof FieldInstruction) {
                 registerCoupling(((FieldInstruction) i).getFieldType(constants()));
 
             } else if (i instanceof InvokeInstruction) {
                 final InvokeInstruction ii = (InvokeInstruction) i;
+
+                registerCoupling(ii.getReferenceType(constants()));
                 Stream.of(ii.getArgumentTypes(constants())).forEach(a -> registerCoupling(a));
                 registerCoupling(ii.getReturnType(constants()));
-
-            } else if (i instanceof TypedInstruction) {
+            }
+            
+            
+            
+            /* else if (i instanceof TypedInstruction) {
                 final Type ti = ((TypedInstruction) i).getType(constants());
                 if (!ti.getSignature().equals("<null object>")) {
                     registerCoupling(ti);
                 }
-            }
-        }
+            }*/
+        //}
     }
 
     @Override
     public void onCoupled(String className) {
         efferentCouplings.add(className);
     }
-    
-    private boolean shouldVisit(Instruction i) {
-        return ((InstructionConstants.INSTRUCTIONS[i.getOpcode()] != null)
-            && !(i instanceof ConstantPushInstruction)
-            && !(i instanceof ReturnInstruction)
-        );
-    }
+
+//    
+//    private boolean shouldVisit(Instruction i) {
+//        return ((InstructionConstants.INSTRUCTIONS[i.getOpcode()] != null)
+////            && !(i instanceof ConstantPushInstruction)
+////            && !(i instanceof ReturnInstruction)
+//        );
+//    }
     
     private void registerCoupling(Type type) {
         registerCoupling(className(type));
     }
     
     private void registerCoupling(String name) {
-        if (!Settings.isJavaSDK(name)) {
-            mgr().get(name).getMetricsMgr().notifyCoupled(visited().getClassName());
-            onCoupled(name);
-        } else if (COUPLE_TO_JAVA_SDK.isSet()) {
-            onCoupled(name);
+        if (!this.name.equals(name) 
+        &&  !PRIMITIVE_NAME.equals(name)) {
+            if (!Settings.isJavaSDK(name)) {
+                mgr().get(name).getMetricsMgr().notifyCoupled(visited().getClassName());
+                onCoupled(name);
+            } else if (COUPLE_TO_JAVA_SDK.isSet()) {
+                onCoupled(name);
+            }
         }
     }
     
     private static String className(Type type) {
         if (type.getType() <= Constants.T_VOID) {
-            return "java.PRIMITIVE";
+            return PRIMITIVE_NAME;
         } else if (type instanceof ArrayType) {
             return className(((ArrayType) type).getBasicType());
         } else {
