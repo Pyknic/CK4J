@@ -35,9 +35,19 @@ import org.pyknic.ck4j.visitors.measures.Wmc;
  *
  * @author Emil Forslund
  */
-public final class CKMetricsBuilder {
+public class CKMetricsBuilder {
     private final String label;
     private final MetricsMgr metrics;
+    
+    CKMetricsBuilder() {
+        label = "";
+        metrics = new MetricsMgr.Impl() {
+            @Override
+            public int get(CK metric) {
+                return 0;
+            }
+        };
+    }
     
     CKMetricsBuilder(JavaClass clazz, CKMetricsBuilderMgr mgr) {
         label = clazz.getClassName();

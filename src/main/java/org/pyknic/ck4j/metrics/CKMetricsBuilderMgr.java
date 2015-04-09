@@ -26,38 +26,51 @@ import org.pyknic.ck4j.visitors.ClassVisitor;
 /**
  * Instantiates builders for new classes encountered and holds them for future
  * use.
+ *
  * @author Emil Forslund
  */
 public final class CKMetricsBuilderMgr {
+
     private final Map<String, CKMetricsBuilder> builders = new HashMap<>();
-    
+
     public void visitAll(Stream<ClassVisitor> visitors) {
-        visitors.collect(Collectors.toList()).forEach(ClassVisitor::visit);
+        visitors
+            .collect(Collectors.toList())
+            .stream()
+            .peek(v -> System.out.println(v))
+            .forEach(ClassVisitor::visit);
 //        visitors.collect(Collectors.toList()).forEach(v -> {
 //            System.out.println(v.dependencies().stream().collect(joining("\n--", "--", "\n")));
 //        });
     }
 
     public CKMetricsBuilder get(JavaClass clazz) {
-        return builders.computeIfAbsent(clazz.getClassName(), 
+        return builders.computeIfAbsent(clazz.getClassName(),
             s -> new CKMetricsBuilder(clazz, this)
         );
     }
-    
+
     public CKMetricsBuilder get(String className) {
         final CKMetricsBuilder result = builders.get(className);
-        
+
         if (result == null) {
-            throw new UnsupportedOperationException("Attempting to access builder for " + className + " before initiated.");
+            //throw new UnsupportedOperationException("Attempting to access builder for " + className + " before initiated.");
+            return new CKMetricsBuilder() {
+
+                @Override
+                public CKMetrics build() {
+                    return new CKMetrics("null", 0, 0, 0, 0, 0, 0);
+                }
+            };
         }
-        
+
         return result;
     }
-    
+
     public Stream<Map.Entry<String, CKMetrics>> stream() {
         return builders.entrySet().stream()
             .map(e -> new HashMap.SimpleEntry<>(
-                e.getKey(), e.getValue().build()
-            ));
+                    e.getKey(), e.getValue().build()
+                ));
     }
 }

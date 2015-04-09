@@ -23,11 +23,9 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import org.apache.bcel.classfile.Field;
 import org.apache.bcel.classfile.JavaClass;
 import org.apache.bcel.generic.MethodGen;
 import org.pyknic.ck4j.metrics.CKMetricsBuilderMgr;
-import org.pyknic.ck4j.visitors.measures.interfaces.OnField;
 import org.pyknic.ck4j.visitors.measures.interfaces.OnMethod;
 
 /**

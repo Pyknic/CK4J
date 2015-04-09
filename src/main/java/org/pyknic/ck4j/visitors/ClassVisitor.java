@@ -52,6 +52,7 @@ public class ClassVisitor extends EmptyVisitor {
         this.constants  = new ConstantPoolGen(visited.getConstantPool());
         this.builder    = mgr.get(visited);
     }
+    
 //    
 //    public Set<String> dependencies() {
 //        final Set<String> results = new HashSet<>();
@@ -117,5 +118,10 @@ public class ClassVisitor extends EmptyVisitor {
                 //.peek(i -> System.out.println("Instruction: " + i.toString(true) + "    " + ((i instanceof TypedInstruction) ? ((TypedInstruction) i).getType(constants).toString() : "-")))
                 .forEach(i -> builder.getMetricsMgr().notifyInstruction(i));
         }
+    }
+
+    @Override
+    public String toString() {
+        return visited.getClassName();
     }
 }

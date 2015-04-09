@@ -34,43 +34,43 @@ public class Main {
     public static void main(String... params) {
 
         System.out.println("Starting CK4J.");
-//        if (params.length > 0) {
-//            String jarPath = params[0];
-            String jarPath = "C:/Users/Duncan/Documents/NetBeansProjects/CodeGenExample_HelloWorld/target/CodeGenExample_HelloWorld-0.0.1-SNAPSHOT-jar-with-dependencies.jar";
-            
-            final CKMetricsBuilderMgr mgr = new CKMetricsBuilderMgr();
-            
-            System.out.println("Attempting to load '" + jarPath + "'.");
-            try {
-                final JarFile jar = new JarFile(new File(jarPath));
-                mgr.visitAll(
-                    jar.stream().filter(e -> e.getName().endsWith(".class")).map(e -> {
-                        try {
-                            final ClassParser cp = new ClassParser(jar.getInputStream(e), e.getName());
-                            final JavaClass clazz = cp.parse();
-                            SyntheticRepository.getInstance().storeClass(clazz);
-                            return new ClassVisitor(clazz, mgr);
-                        } catch (IOException ex) {
-                            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, 
-                                "Failed to parse class: '" + e.getName() + "'.", ex
-                            );
-                            return null;
-                        }
-                    })
-                );
-            } catch (IOException ex) {
-                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, 
-                    "Failed to load .jar file: '" + jarPath + "'.", ex
-                );
-            }
 
-            mgr.stream().forEach(e -> {
-                System.out.println("    " + e.getKey() + " : " + e.getValue());
-            });
+//        String jarPath = "C:/Users/Duncan/Documents/NetBeansProjects/CodeGenExample_HelloWorld/target/CodeGenExample_HelloWorld-0.0.1-SNAPSHOT-jar-with-dependencies.jar";
+        String jarPath = "C:/Users/Duncan/Documents/NetBeansProjects/CodeGenExample_HelloWorld/ace-plugin-java-1.0.8-SNAPSHOT-jar-with-dependencies.jar";
 
-//        } else {
-//            System.err.println("Missing parameter! You need to specifiy a .class file or a folder that can be traversed to find .class files.");
-//        }
+        final CKMetricsBuilderMgr mgr = new CKMetricsBuilderMgr();
+
+        System.out.println("Attempting to load '" + jarPath + "'.");
+        try {
+            final JarFile jar = new JarFile(new File(jarPath));
+            mgr.visitAll(
+                jar.stream()
+                    .filter(e -> e.getName().endsWith(".class"))
+                    //.filter(e -> !e.getName().contains("Enhancer"))
+                    .map(e -> {
+                    try {
+                        final ClassParser cp = new ClassParser(jar.getInputStream(e), e.getName());
+                        final JavaClass clazz = cp.parse();
+                        SyntheticRepository.getInstance().storeClass(clazz);
+                        return new ClassVisitor(clazz, mgr);
+                    } catch (IOException ex) {
+                        Logger.getLogger(Main.class.getName()).log(Level.SEVERE, 
+                            "Failed to parse class: '" + e.getName() + "'.", ex
+                        );
+                        return null;
+                    }
+                })
+            );
+        } catch (IOException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, 
+                "Failed to load .jar file: '" + jarPath + "'.", ex
+            );
+        }
+
+        mgr.stream().forEach(e -> {
+            System.out.println("    " + e.getKey() + " : " + e.getValue());
+        });
+        
         System.out.println("Closing down.");
     }
 }
