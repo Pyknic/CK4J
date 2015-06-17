@@ -17,36 +17,11 @@
 package org.pyknic.ck4j.visitors.measures.interfaces;
 
 import org.apache.bcel.classfile.JavaClass;
-import org.apache.bcel.generic.ConstantPoolGen;
-import org.pyknic.ck4j.metrics.CKMetricsBuilderMgr;
 
 /**
  *
  * @author Emil Forslund
  */
-public abstract class Metric {
-	
-    private final JavaClass visited;
-    private final CKMetricsBuilderMgr mgr;
-    private final ConstantPoolGen constants;
-    
-    public Metric(JavaClass visited, CKMetricsBuilderMgr mgr) {
-        this.visited = visited;
-        this.mgr = mgr;
-        this.constants = new ConstantPoolGen(visited.getConstantPool());
-    }
-
-    protected final JavaClass visited() {
-        return visited;
-    }
-
-    protected final CKMetricsBuilderMgr mgr() {
-        return mgr;
-    }
-    
-    protected final ConstantPoolGen constants() {
-        return constants;
-    }
-    
-    public abstract int getResult();
+public interface OnChild {
+	void onChild(JavaClass child);
 }

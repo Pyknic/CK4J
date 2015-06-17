@@ -16,20 +16,12 @@
  */
 package org.pyknic.ck4j.visitors;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.function.Function;
-import static java.util.stream.Collectors.toList;
 import java.util.stream.Stream;
 import org.apache.bcel.classfile.EmptyVisitor;
 import org.apache.bcel.classfile.JavaClass;
 import org.apache.bcel.classfile.Method;
 import org.apache.bcel.generic.ConstantPoolGen;
 import org.apache.bcel.generic.MethodGen;
-import org.apache.bcel.generic.Type;
-import org.apache.bcel.generic.TypedInstruction;
 import org.pyknic.ck4j.metrics.CKMetricsBuilder;
 import org.pyknic.ck4j.metrics.CKMetricsBuilderMgr;
 
@@ -38,6 +30,7 @@ import org.pyknic.ck4j.metrics.CKMetricsBuilderMgr;
  * @author Emil Forslund
  */
 public class ClassVisitor extends EmptyVisitor {
+	
     private final JavaClass visited;
     private final ConstantPoolGen constants;
     private final CKMetricsBuilder builder;
@@ -115,7 +108,6 @@ public class ClassVisitor extends EmptyVisitor {
         if (!gen.isAbstract() && !gen.isNative()) {
             Stream.of(gen.getInstructionList().getInstructionHandles())
                 .map(ih -> ih.getInstruction())
-                //.peek(i -> System.out.println("Instruction: " + i.toString(true) + "    " + ((i instanceof TypedInstruction) ? ((TypedInstruction) i).getType(constants).toString() : "-")))
                 .forEach(i -> builder.getMetricsMgr().notifyInstruction(i));
         }
     }

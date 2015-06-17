@@ -34,6 +34,7 @@ public abstract class MetricsMgr {
     
     protected final Map<CK, Metric> metrics = new EnumMap<>(CK.class);
     protected final List<OnClass> onClass = new ArrayList<>();
+	protected final List<OnChild> onChild = new ArrayList<>();
     protected final List<OnField> onField = new ArrayList<>();
     protected final List<OnInstruction> onInstruction = new ArrayList<>();
     protected final List<OnInterface> onInterface = new ArrayList<>();
@@ -49,6 +50,7 @@ public abstract class MetricsMgr {
             metrics.put(name, metric);
 
             if (metric instanceof OnClass)       onClass.add((OnClass) metric);
+			if (metric instanceof OnChild)       onChild.add((OnChild) metric);
             if (metric instanceof OnField)       onField.add((OnField) metric);
             if (metric instanceof OnInstruction) onInstruction.add((OnInstruction) metric);
             if (metric instanceof OnInterface)   onInterface.add((OnInterface) metric);
@@ -61,6 +63,10 @@ public abstract class MetricsMgr {
     
     public void notifyClass(JavaClass clazz) {
         onClass.stream().forEach(c -> c.onClass(clazz));
+    }
+	
+	public void notifyChild(JavaClass child) {
+        onChild.stream().forEach(c -> c.onChild(child));
     }
     
     public void notifyField(Field field) {

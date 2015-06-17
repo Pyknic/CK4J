@@ -38,9 +38,9 @@ public class Dit extends Metric {
         try {
             return visited().getSuperClasses().length;
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Dit.class.getName()).log(Level.SEVERE, 
-                "Failed to load one or more super classes of '" + visited().getClassName() + "'."
-            , ex);
+//            Logger.getLogger(Dit.class.getName()).log(Level.SEVERE, 
+//                "Failed to load one or more super classes of '" + visited().getClassName() + "'."
+//            , ex);
             return -1;
         }
     }

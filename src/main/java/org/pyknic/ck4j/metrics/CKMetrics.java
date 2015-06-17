@@ -18,7 +18,6 @@ package org.pyknic.ck4j.metrics;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * A lightweight representation of the CK metrics of a particular class.

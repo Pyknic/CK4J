@@ -37,7 +37,7 @@ public final class CKMetricsBuilderMgr {
         visitors
             .collect(Collectors.toList())
             .stream()
-            .peek(v -> System.out.println(v))
+            //.peek(v -> System.out.println(v))
             .forEach(ClassVisitor::visit);
 //        visitors.collect(Collectors.toList()).forEach(v -> {
 //            System.out.println(v.dependencies().stream().collect(joining("\n--", "--", "\n")));

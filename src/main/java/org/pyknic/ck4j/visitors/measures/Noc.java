@@ -16,21 +16,48 @@
  */
 package org.pyknic.ck4j.visitors.measures;
 
+import java.util.HashSet;
+import java.util.Set;
 import org.pyknic.ck4j.visitors.measures.interfaces.Metric;
 import org.apache.bcel.classfile.JavaClass;
+import org.pyknic.ck4j.metrics.CKMetricsBuilder;
 import org.pyknic.ck4j.metrics.CKMetricsBuilderMgr;
+import org.pyknic.ck4j.visitors.measures.interfaces.OnChild;
+import org.pyknic.ck4j.visitors.measures.interfaces.OnClass;
 
 /**
  *
  * @author Emil Forslund
  */
-public class Noc extends Metric {
+public class Noc extends Metric implements OnClass, OnChild {
+	
+	private final Set<JavaClass> children;
+	
     public Noc(JavaClass visited, CKMetricsBuilderMgr mgr) {
         super(visited, mgr);
+		this.children = new HashSet<>();
     }
+	
+	@Override
+	public void onChild(JavaClass child) {
+		children.add(child);
+	}
+	
+	@Override
+	public void onClass(JavaClass me) {
+		try {
+			final JavaClass parent = me.getSuperClass();
+			if (parent != null) {
+				final CKMetricsBuilder ck = mgr().get(parent);
+				ck.getMetricsMgr().notifyChild(me);
+			}
+		} catch (ClassNotFoundException ex) {
+			//Logger.getLogger(Noc.class.getName()).log(Level.SEVERE, null, ex);
+		}
+	}
     
     @Override
     public int getResult() {
-        return 0;
+        return children.size();
     }
 }

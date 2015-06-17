@@ -25,15 +25,11 @@ import org.apache.bcel.Constants;
 import org.apache.bcel.classfile.Field;
 import org.apache.bcel.classfile.JavaClass;
 import org.apache.bcel.generic.ArrayType;
-import org.apache.bcel.generic.ConstantPushInstruction;
 import org.apache.bcel.generic.FieldInstruction;
 import org.apache.bcel.generic.Instruction;
-import org.apache.bcel.generic.InstructionConstants;
 import org.apache.bcel.generic.InvokeInstruction;
 import org.apache.bcel.generic.MethodGen;
-import org.apache.bcel.generic.ReturnInstruction;
 import org.apache.bcel.generic.Type;
-import org.apache.bcel.generic.TypedInstruction;
 import org.pyknic.ck4j.metrics.CKMetricsBuilderMgr;
 import org.pyknic.ck4j.visitors.Settings;
 import static org.pyknic.ck4j.visitors.Settings.COUPLE_TO_INTERFACES;
@@ -64,7 +60,6 @@ public class Cbo extends Metric implements OnClass, OnInterface, OnField,
     
     @Override
     public int getResult() {
-        System.out.println("Coupling for " + name + ":\n    " + efferentCouplings.stream().collect(joining("\n    ")));
         return efferentCouplings.size();
     }
 
